@@ -1,0 +1,30 @@
+version: '3.11'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: "web"
+    restart: always
+    volumes:
+      - ..:/app
+    ports:
+      - "8080:80"
+    environment:
+      - PYTHONBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+    depends_on:
+      - pgdb
+      - redis
+  pgdb:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    container_name: pgdb_new
+
+volumes:
+    postgres-data:
